@@ -1,9 +1,9 @@
 /**
  * @name angular-help-me
  *
- * @module This is an Angular module for rendering help blocks in UI-forms.
+ * @fileoverview This is an Angular module for rendering help blocks in UI-forms.
  * Putting help content for end user is pretty common, but is repeatable
- * and is complecated to change. This module tries to solve this problem
+ * and is complicated to change. This module tries to solve this problem
  * in angular way(i.e making it declarative and DRY).
  *
  * @author Vinit Kumar Rai

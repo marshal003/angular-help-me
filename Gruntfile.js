@@ -11,8 +11,10 @@ module.exports = function(grunt) {
   };
 
   // Livereload setup
-  var lrSnippet = require('connect-livereload')({port: yoConfig.livereload});
-  var mountFolder = function (connect, dir) {
+  var lrSnippet = require('connect-livereload')({
+    port: yoConfig.livereload
+  });
+  var mountFolder = function(connect, dir) {
     return connect.static(require('path').resolve(dir));
   };
 
@@ -25,12 +27,12 @@ module.exports = function(grunt) {
     yo: yoConfig,
     meta: {
       banner: '/**\n' +
-      ' * <%= pkg.name %>\n' +
-      ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      ' * @link <%= pkg.homepage %>\n' +
-      ' * @author <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
-      ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
-      ' */\n'
+        ' * <%= pkg.name %>\n' +
+        ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        ' * @link <%= pkg.homepage %>\n' +
+        ' * @author <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
+        ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
+        ' */\n'
     },
     open: {
       server: {
@@ -81,7 +83,7 @@ module.exports = function(grunt) {
       },
       livereload: {
         options: {
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               lrSnippet,
               mountFolder(connect, '.tmp'),
@@ -169,12 +171,12 @@ module.exports = function(grunt) {
     },
 
     jsdoc: {
-        dist : {
-            src: ['src/*.js', 'test/*.js'],
-            options: {
-                destination: 'doc'
-            }
+      dist: {
+        src: ['src/*.js', 'test/*.js'],
+        options: {
+          destination: 'doc'
         }
+      }
     }
   });
 
