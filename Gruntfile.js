@@ -166,6 +166,15 @@ module.exports = function(grunt) {
         src: '<%= concat.dist.dest %>',
         dest: '<%= yo.dist %>/<%= pkg.name %>.min.js'
       }
+    },
+
+    jsdoc: {
+        dist : {
+            src: ['src/*.js', 'test/*.js'],
+            options: {
+                destination: 'doc'
+            }
+        }
     }
   });
 
@@ -173,6 +182,7 @@ module.exports = function(grunt) {
     'jshint',
     'karma:unit'
   ]);
+
 
   grunt.registerTask('build', [
     'clean:dist',
@@ -188,6 +198,5 @@ module.exports = function(grunt) {
     'bump-commit'
   ]);
 
-  grunt.registerTask('default', ['build']);
-
+  grunt.registerTask('default', ['test', 'build']);
 };

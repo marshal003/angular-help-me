@@ -1,6 +1,33 @@
 {
   "name": "angular-help-me",
-  "version": "0.0.1",
+  "description": "Angular module for rendering help block in angular ways(i.e declarative & DRY)",
+  "version": "0.0.0",
+  "main": [
+    "src/angular-help-me.js"
+  ],
+  "authors": [{
+    "name": "Vinit Kumar Rai",
+    "email": "vinitrai.marshal@gmail.com"
+  }],
+  "resolutions": {
+    "angular": "1.3.4"
+  },
+  "keywords": [
+    "help text",
+    "help block",
+    "help message",
+    "angular help component",
+    "angular help directive",
+    "help directive",
+    "angular help module"
+  ],
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "node_modules",
+    "test"
+  ],
+  "license": "MIT",
   "dependencies": {
     "angular": "~1.3.4"
   },
