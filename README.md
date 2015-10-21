@@ -1,4 +1,4 @@
-# angular-help-me
+# angular-help-me [![Build Status](https://travis-ci.org/marshal003/angular-help-me.svg?branch=master)](https://travis-ci.org/marshal003/angular-help-me)
 
 
 
