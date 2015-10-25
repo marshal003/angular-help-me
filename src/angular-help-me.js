@@ -229,6 +229,7 @@ angular.module('hiComponents.helpMe', [])
 
   return {
     scope: true,
+    restrict: 'A',
     controller: ['$scope', '$compile', 'hiHelpDesk', '$log',
       function($scope, $compile, helpDesk, $log) {
 

@@ -170,6 +170,7 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
 ]).directive('hiHelpText', function () {
   return {
     scope: true,
+    restrict: 'A',
     controller: [
       '$scope',
       '$compile',
