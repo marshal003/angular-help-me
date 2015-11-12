@@ -279,12 +279,10 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
        * if it simply put help element after current element in DOM.
        */
       scope.$watch('showHelpText', function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-          if (newVal === true && scope.renderHelpTextAsDataAtrribute(attrs)) {
-            element.attr(scope.getHelpAttribute(attrs), scope.helpText);
-          } else {
-            element.removeAttr(scope.getHelpAttribute(attrs));
-          }
+        if (newVal === true && scope.renderHelpTextAsDataAtrribute(attrs)) {
+          element.attr(scope.getHelpAttribute(attrs), scope.helpText);
+        } else {
+          element.removeAttr(scope.getHelpAttribute(attrs));
         }
       });
       var addHelpElement = function () {

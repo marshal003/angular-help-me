@@ -291,12 +291,10 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
        */
       
       scope.$watch('showHelpText', function(newVal, oldVal){
-        if(newVal !== oldVal) {
-          if (newVal === true && scope.renderHelpTextAsDataAtrribute(attrs)){
-            element.attr(scope.getHelpAttribute(attrs), scope.helpText);
-          }else{
-            element.removeAttr(scope.getHelpAttribute(attrs));
-          }
+        if (newVal === true && scope.renderHelpTextAsDataAtrribute(attrs)){
+          element.attr(scope.getHelpAttribute(attrs), scope.helpText);
+        }else{
+          element.removeAttr(scope.getHelpAttribute(attrs));
         }
       });
       

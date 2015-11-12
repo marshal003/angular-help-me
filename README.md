@@ -6,8 +6,8 @@ I have discussed the philosophy of this component in [this blog](http://codepen.
 
 Download the [production version][min] or the [development version][max].
 
-[min]: https://raw.github.com/marshal003/jquery-angular-help-me/master/dist/angular-angular-help-me.min.js
-[max]: https://raw.github.com/marshal003/jquery-angular-help-me/master/dist/angular-angular-help-me.js
+[min]: https://raw.githubusercontent.com/marshal003/angular-help-me/master/dist/angular-help-me.min.js
+[max]: https://raw.githubusercontent.com/marshal003/angular-help-me/master/dist/angular-help-me.js
 
 In your web page:
 
@@ -59,7 +59,7 @@ bower install marshal003/git@github.com:marshal003/angular-help-me.git
     4.1. If you have followed **3.1** step to set up help text database then use decorator to decorate **hiHelpDB**.
     eg.
     ```js
-    angular.moule('myApp').config(function($provide){
+    angular.module('myApp').config(function($provide){
       $provide.decorator('hiHelpDB',
       ['$delegate',  'myHelpDB', function($delegate, myHelpDB){
           return myHelpDB;
@@ -70,7 +70,7 @@ bower install marshal003/git@github.com:marshal003/angular-help-me.git
     4.2 If you have followed **3.2** step to setup help text database then use decorator to decorate **hiHelpDBService**.
     eg.
     ```js
-    angular.moule('myApp').config(function($provide){
+    angular.module('myApp').config(function($provide){
       $provide.decorator('hiHelpDBService',
       ['$delegate',  'loadHelpTextService', function($delegate, myHelpDB){
           return loadHelpTextService;
@@ -107,10 +107,10 @@ here help `help-block` is css class defined in bootstrap, if you are not using b
 **Custom Help Template**: If you want to render help texts using some custom template then you can do in two ways :
 
   - **Override default template**: Help component put default component in angular's $templateCache, but before doing this, it checks if there is any component defined with default key(**helpMe.directiveHTML**). So, we can easily override the default component by defining our own template with same key.
+  
     ```html
       <script type="text/ng-template" id="helpMe.directiveHTML">
-        <span class="glyphicon glyphicon-question-sign"
-              ng-show="showHelpText">
+        <span class="glyphicon glyphicon-question-sign" ng-show="showHelpText">
           <i data-ng-bind="helpText"></i>
         </span>
       </script>
