@@ -1,6 +1,6 @@
 {
   "name": "angular-help-me",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Angular module for rendering help block in angular ways(i.e declarative & DRY)",
   "keywords": [
     "help text",

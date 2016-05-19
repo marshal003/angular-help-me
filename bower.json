@@ -1,7 +1,7 @@
 {
   "name": "angular-help-me",
   "description": "Angular module for rendering help block in angular ways(i.e declarative & DRY)",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": [
     "src/angular-help-me.js"
   ],

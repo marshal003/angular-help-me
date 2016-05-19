@@ -1,3 +1,4 @@
+// Code goes here
 /**
  * @name angular-help-me
  *
@@ -25,7 +26,7 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
   'hiHelpDBService',
   '$q',
   function ($rootScope, $templateCache, helpDBService, $q) {
-    var helpDatabase = {}, showHelpText = true, _locale = null, defaultTemplateKey = 'helpMe.directiveHTML';
+    var helpDatabase = {}, showHelpText = true, _locale = null, defaultTemplateKey = 'helpMe.directiveHTML', _helpTextAsDataAttributes = false, _dataAttribute = 'tooltip';
     /**
      * Function to return help text for the given query(key)
      *
@@ -154,6 +155,18 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
       }
       $rootScope.$broadcast('hihelpMe-on-db-update');
     };
+    var helpTextAsDataAttribute = function (asDataAttribute) {
+      _helpTextAsDataAttributes = asDataAttribute;
+    };
+    var setHelpTextDataAttribute = function (dataAttribute) {
+      _dataAttribute = dataAttribute;
+    };
+    var getHelpTextDataAttribite = function () {
+      return _dataAttribute;
+    };
+    var renderHelpTextAsDataAtrribute = function () {
+      return _helpTextAsDataAttributes;
+    };
     _initialize();
     return {
       addHelpText: addHelpText,
@@ -164,7 +177,11 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
       setHelpTemplate: setHelpTemplate,
       getHelpTemplate: getHelpTemplate,
       setHelpDatabase: setHelpDatabase,
-      setLocale: setLocale
+      setLocale: setLocale,
+      helpTextAsDataAttribute: helpTextAsDataAttribute,
+      renderHelpTextAsDataAtrribute: renderHelpTextAsDataAtrribute,
+      getHelpTextDataAttribite: getHelpTextDataAttribite,
+      setHelpTextDataAttribute: setHelpTextDataAttribute
     };
   }
 ]).directive('hiHelpText', function () {
@@ -178,25 +195,30 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
       '$log',
       function ($scope, $compile, helpDesk, $log) {
         $scope.helpKey = '';
-        $scope.getHelpElement = function (helpKey, tplKey) {
+        $scope.getHelpElement = function (tplKey) {
+          var helpElement = angular.element(helpDesk.getHelpTemplate(tplKey));
+          return $compile(helpElement)($scope);
+        };
+        $scope.getHelpText = function (helpKey) {
           $scope.helpKey = helpKey;
           $scope.helpText = helpDesk.getHelpForKey(helpKey);
           $scope.showHelpText = helpDesk.isHelpModeOn() && $scope.helpText;
-          var helpElement = angular.element(helpDesk.getHelpTemplate(tplKey));
-          return $compile(helpElement)($scope);
         };
         /**
          * @listens 'hihelpMe-toggle-help-text' and toggle display of help text.
          */
+        var displayHelpText = function () {
+          return helpDesk.isHelpModeOn() && $scope.helpText !== undefined && $scope.helpText.length > 0;
+        };
         $scope.$on('hihelpMe-toggle-help-text', function () {
-          $scope.showHelpText = helpDesk.isHelpModeOn() && $scope.helpText;
+          $scope.showHelpText = displayHelpText();
         });
         /**
          * @listens 'hihelpMe-on-locale-change' and update help text.
          */
         $scope.$on('hihelpMe-on-locale-change', function () {
           $scope.helpText = helpDesk.getHelpForKey($scope.helpKey);
-          $scope.showHelpText = helpDesk.isHelpModeOn() && $scope.helpText;
+          $scope.showHelpText = displayHelpText();
         });
         /**
          * @listens 'hihelpMe-on-db-change' and update help text as per locale.
@@ -204,7 +226,7 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
          */
         $scope.$on('hihelpMe-on-db-change', function () {
           $scope.helpText = helpDesk.getHelpForKey($scope.helpKey);
-          $scope.showHelpText = helpDesk.isHelpModeOn() && $scope.helpText;
+          $scope.showHelpText = displayHelpText();
         });
         /**
          * @listens 'hihelpMe-on-db-change' rerender help text on help db change.
@@ -212,9 +234,18 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
         $scope.$on('hihelpMe-on-db-update', function (event, data) {
           if (data.key === $scope.helpKey) {
             $scope.helpText = helpDesk.getHelpForKey($scope.helpKey);
-            $scope.showHelpText = helpDesk.isHelpModeOn() && $scope.helpText;
+            $scope.showHelpText = displayHelpText();
           }
         });
+        $scope.renderHelpTextAsDataAtrribute = function (attrs) {
+          return !attrs.hiHelpTpl && (attrs.helpTextAsDataAttr || helpDesk.renderHelpTextAsDataAtrribute());
+        };
+        $scope.getHelpAttribute = function (attrs) {
+          if (attrs.helpTextAsDataAttr && attrs.helpTextAsDataAttr.length > 0) {
+            return attrs.helpTextAsDataAttr;
+          }
+          return helpDesk.getHelpTextDataAttribite();
+        };
       }
     ],
     link: function (scope, element, attrs) {
@@ -247,14 +278,26 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
        * is wrapper element then it tries to append the help element to it, else
        * if it simply put help element after current element in DOM.
        */
+      scope.$watch('showHelpText', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          if (newVal === true && scope.renderHelpTextAsDataAtrribute(attrs)) {
+            element.attr(scope.getHelpAttribute(attrs), scope.helpText);
+          } else {
+            element.removeAttr(scope.getHelpAttribute(attrs));
+          }
+        }
+      });
       var addHelpElement = function () {
-        var helpElement = scope.getHelpElement(attrs.hiHelpText, attrs.hiHelpTpl);
+        if (scope.renderHelpTextAsDataAtrribute(attrs))
+          return;
+        var helpElement = scope.getHelpElement(attrs.hiHelpTpl);
         if (isContainerElement()) {
           element.append(helpElement);
         } else {
           element.after(helpElement);
         }
       };
+      scope.getHelpText(attrs.hiHelpText);
       addHelpElement();
     }
   };
