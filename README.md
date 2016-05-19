@@ -151,3 +151,5 @@ eg. Few APIs are
 2. [Example with two locales and custom template](http://codepen.io/marshal003/pen/vNRBqG)
 
 3. [Example with remote help text load](http://codepen.io/marshal003/pen/xwWggx)
+
+4. [Example to render help text as tooltip](http://codepen.io/marshal003/full/eZwBgw/) 
