@@ -216,18 +216,21 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
          * @listens 'hihelpMe-toggle-help-text' and toggle display of help text.
          */
         var displayHelpText = function() {
-          return helpDesk.isHelpModeOn() && $scope.helpText !== undefined && $scope.helpText.length > 0;
+          $scope.showHelpText = helpDesk.isHelpModeOn() && $scope.helpText !== undefined && $scope.helpText.length > 0;
+          if($scope.displayTextAsAttribute) {
+            $scope.updateElementDataAttribute($scope.showHelpText, $scope.helpText);
+          }
         };
         
         $scope.$on('hihelpMe-toggle-help-text', function () {
-          $scope.showHelpText = displayHelpText();
+          displayHelpText();
         });
         /**
          * @listens 'hihelpMe-on-locale-change' and update help text.
          */
         $scope.$on('hihelpMe-on-locale-change', function () {
           $scope.helpText = helpDesk.getHelpForKey($scope.helpKey);
-          $scope.showHelpText = displayHelpText();
+          displayHelpText();
         });
         /**
          * @listens 'hihelpMe-on-db-change' and update help text as per locale.
@@ -235,7 +238,7 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
          */
         $scope.$on('hihelpMe-on-db-change', function () {
           $scope.helpText = helpDesk.getHelpForKey($scope.helpKey);
-          $scope.showHelpText = displayHelpText();
+          displayHelpText();
         });
         /**
          * @listens 'hihelpMe-on-db-change' rerender help text on help db change.
@@ -243,7 +246,7 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
         $scope.$on('hihelpMe-on-db-update', function (event, data) {
           if (data.key === $scope.helpKey) {
             $scope.helpText = helpDesk.getHelpForKey($scope.helpKey);
-            $scope.showHelpText = displayHelpText();
+            displayHelpText();
           }
         });
         
@@ -290,13 +293,16 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
        * if it simply put help element after current element in DOM.
        */
       
-      scope.$watch('showHelpText', function(newVal, oldVal){
-        if (newVal === true && scope.renderHelpTextAsDataAtrribute(attrs)){
-          element.attr(scope.getHelpAttribute(attrs), scope.helpText);
-        }else{
-          element.removeAttr(scope.getHelpAttribute(attrs));
+      var helpAttr = scope.getHelpAttribute(attrs);
+      
+      scope.displayTextAsAttribute = scope.renderHelpTextAsDataAtrribute(attrs);
+      scope.updateElementDataAttribute = function(isHelpModeOn, text) {
+        if(isHelpModeOn === true) {
+          element.attr(helpAttr, text);
+        }else {
+          element.removeAttr(helpAttr);
         }
-      });
+      };
       
       var addHelpElement = function () {
         if(scope.renderHelpTextAsDataAtrribute(attrs)) return;
