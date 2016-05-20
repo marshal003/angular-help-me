@@ -202,7 +202,7 @@ angular.module('hiComponents.helpMe', []).value('hiHelpDB', { aboutHelp: 'The he
         $scope.getHelpText = function (helpKey) {
           $scope.helpKey = helpKey;
           $scope.helpText = helpDesk.getHelpForKey(helpKey);
-          $scope.showHelpText = helpDesk.isHelpModeOn() && $scope.helpText;
+          displayHelpText();
         };
         /**
          * @listens 'hihelpMe-toggle-help-text' and toggle display of help text.
